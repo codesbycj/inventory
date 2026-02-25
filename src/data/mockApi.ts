@@ -30,17 +30,13 @@ const INITIAL_ITEMS: InventoryItem[] = [
   { id: '20', name: 'SPF 50 Sunscreen 100ml', sku: 'BTY-SUN-SPF',  category: 'Beauty',        stock: 22  },
 ];
 
-// In-memory store — persists within the same browser session
 let db: InventoryItem[] = [...INITIAL_ITEMS];
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-/**
- * Simulates fetching inventory from an API.
- * To test the error state, change `shouldFail` to `true`.
- */
+// A case where the inventory doesn't load
 export async function fetchInventory(shouldFail = false): Promise<InventoryItem[]> {
   await delay(900);
   if (shouldFail) {
@@ -49,13 +45,12 @@ export async function fetchInventory(shouldFail = false): Promise<InventoryItem[
   return [...db];
 }
 
-/**
- * Simulates updating a single item's stock on the server.
- */
+// Updating the stock 
 export async function updateItemStock(id: string, stock: number): Promise<InventoryItem> {
-  await delay(600);
+  // Takes one second to save
+  await delay(1000); 
   const index = db.findIndex((item) => item.id === id);
   if (index === -1) throw new Error('Item not found.');
-  db[index] = { ...db[index], stock };
+  db[index] = { ...db[index], stock:stock };
   return { ...db[index] };
 }

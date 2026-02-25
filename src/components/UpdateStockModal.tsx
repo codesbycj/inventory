@@ -5,9 +5,7 @@ import { z } from 'zod';
 import { useUpdateStock } from '../hooks/useInventory';
 import type { InventoryItem } from '../types/inventory';
 
-// ─── Validation schema ────────────────────────────────────────────────────────
-// Using z.number() (not z.coerce) so RHF's valueAsNumber: true
-// delivers a real number and the resolver types stay consistent.
+
 
 const schema = z.object({
   stock: z
@@ -17,15 +15,6 @@ const schema = z.object({
 });
 
 type FormValues = z.infer<typeof schema>;
-
-// ─── Shared button class strings ──────────────────────────────────────────────
-const btnPrimary =
-  'px-4.5 py-2.25 bg-blue-600 text-white border border-transparent rounded-lg text-sm font-medium cursor-pointer transition-colors hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap';
-
-const btnSecondary =
-  'px-4.5 py-2.25 bg-transparent text-slate-900 border border-slate-200 rounded-lg text-sm font-medium cursor-pointer transition-colors hover:bg-slate-50 hover:border-slate-300 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap';
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 interface Props {
   item: InventoryItem;
@@ -44,14 +33,6 @@ export function UpdateStockModal({ item, onClose }: Props) {
     defaultValues: { stock: item.stock },
   });
 
-  // Close on Escape key
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && !isPending) onClose();
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onClose, isPending]);
 
   const onSubmit = (data: FormValues) => {
     resetMutation();
@@ -78,7 +59,6 @@ export function UpdateStockModal({ item, onClose }: Props) {
         aria-modal="true"
         aria-labelledby="modal-title"
       >
-        {/* Header */}
         <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-200">
           <h2 id="modal-title" className="text-[17px] font-semibold text-slate-900">
             Update Stock
@@ -93,9 +73,8 @@ export function UpdateStockModal({ item, onClose }: Props) {
           </button>
         </div>
 
-        {/* Body */}
+        {/* Modal */}
         <div className="px-6 pt-5 pb-6 flex flex-col gap-4">
-          {/* Item summary */}
           <dl className="bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 flex flex-col gap-1.5">
             <div className="grid grid-cols-[110px_1fr] items-baseline gap-2">
               <dt className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">Item</dt>
@@ -111,7 +90,6 @@ export function UpdateStockModal({ item, onClose }: Props) {
             </div>
           </dl>
 
-          {/* Server error banner */}
           {isError && (
             <div
               className="px-3.5 py-2.5 bg-red-50 border border-red-200 rounded-lg text-red-600 text-[13px]"
@@ -123,7 +101,7 @@ export function UpdateStockModal({ item, onClose }: Props) {
             </div>
           )}
 
-          {/* Form */}
+          {/* Input */}
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="flex flex-col gap-1.5">
               <label htmlFor="stock-input" className="text-sm font-medium text-slate-900">
@@ -136,8 +114,6 @@ export function UpdateStockModal({ item, onClose }: Props) {
                 step={1}
                 autoFocus
                 disabled={isPending}
-                aria-invalid={errors.stock ? 'true' : 'false'}
-                aria-describedby={errors.stock ? 'stock-error' : undefined}
                 className={`w-full px-3 py-2.25 border rounded-lg text-sm text-slate-900 bg-white outline-none transition-all [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none disabled:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-70 focus:ring-[3px] ${
                   errors.stock
                     ? 'border-red-600 focus:ring-red-600/10'
@@ -155,13 +131,13 @@ export function UpdateStockModal({ item, onClose }: Props) {
             <div className="flex justify-end gap-2 mt-5">
               <button
                 type="button"
-                className={btnSecondary}
+                className=  'px-4.5 py-2.25 bg-transparent text-slate-900 border border-slate-200 rounded-lg text-sm font-medium cursor-pointer transition-colors hover:bg-slate-50 hover:border-slate-300 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap'
                 onClick={onClose}
                 disabled={isPending}
               >
                 Cancel
               </button>
-              <button type="submit" className={btnPrimary} disabled={isPending}>
+              <button type="submit" className=  'px-4.5 py-2.25 bg-blue-600 text-white border border-transparent rounded-lg text-sm font-medium cursor-pointer transition-colors hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap' disabled={isPending}>
                 {isPending ? 'Saving…' : 'Update Stock'}
               </button>
             </div>
