@@ -9,7 +9,6 @@ const btnPrimary =
   'px-4.5 py-2.25 bg-blue-600 text-white border border-transparent rounded-lg text-sm font-medium cursor-pointer transition-colors hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed';
 
 export function InventoryPage() {
-  // ── URL-synced search term ────────────────────────────────────────────────
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get('search') ?? '';
 
@@ -18,10 +17,8 @@ export function InventoryPage() {
     setSearchParams(value ? { search: value } : {}, { replace: true });
   };
 
-  // ── Data fetching ─────────────────────────────────────────────────────────
   const { data, isPending, isError, error, refetch } = useInventory();
 
-  // ── Client-side filtering ─────────────────────────────────────────────────
   const filtered = useMemo<InventoryItem[]>(() => {
     if (!data) return [];
     const term = search.trim().toLowerCase();
@@ -34,7 +31,6 @@ export function InventoryPage() {
     );
   }, [data, search]);
 
-  // ── Modal state ───────────────────────────────────────────────────────────
   const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
 
   const handleRowClick = useCallback((item: InventoryItem) => {
@@ -45,7 +41,6 @@ export function InventoryPage() {
     setSelectedItem(null);
   }, []);
 
-  // ── Render ────────────────────────────────────────────────────────────────
   return (
     <div className="max-w-275 mx-auto px-5 py-8">
       <header className="flex items-center justify-between gap-4 mb-6 flex-wrap">
