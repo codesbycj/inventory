@@ -53,7 +53,7 @@ export function InventoryTable({ items, onRowClick }: Props) {
                   {item.stock}
                 </span>
                 {item.stock < 50 && (
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.04em] text-red-600 bg-red-50 border border-red-200 rounded-full px-1.75 py-px">
+                  <span className="hidden sm:inline text-[11px] font-semibold uppercase tracking-[0.04em] text-red-600 bg-red-50 border border-red-200 rounded-full px-1.75 py-px">
                     Low
                   </span>
                 )}
