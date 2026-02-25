@@ -47,7 +47,7 @@ export function UpdateStockModal({ item, onClose }: Props) {
 
   return (
     <div
-      className="fixed inset-0 bg-slate-950/50 flex items-center justify-center p-4 z-[200] animate-fade-in"
+      className="fixed inset-0 bg-slate-950/50 flex items-center justify-center p-4 z-200 animate-fade-in"
       onClick={handleBackdropClick}
       role="presentation"
     >
